@@ -54,10 +54,26 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 }
 
 Token Calculator::evaluate(std::vector<Token> inputVector) {
+
+	while (inputVector.size() > 3) {
+		std::vector<Token> temp;
+		std::vector<Token> toEvaluate;
+		for (int i = 0; i < 3; i++) {
+			toEvaluate.push_back(inputVector[i]);
+		}
+		temp.push_back(evaluate(toEvaluate));
+		for (int i = 3; i < inputVector.size(); i++) {
+			temp.push_back(inputVector[i]);
+		}
+		inputVector = temp;
+	}
 	if (inputVector.size() == 3) {
 		double outcome = calculate(inputVector[0].getContent(), inputVector[2].getContent(), inputVector[1].getContent());
 		std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
 		return Token(TokenType::NUMBER, content);
+	}
+	else {
+		return inputVector[0];
 	}
 }
 
