@@ -53,7 +53,42 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 	}
 }
 
+std::vector<Token> Calculator::prioritiseOperators(std::vector<Token> inputVector, std::string operators) {
+	if (inputVector.size() == 1) {
+		return inputVector;
+	}
+	if (inputVector.size() != 3) {
+		bool containsOperators;
+		do {
+			containsOperators = 0;
+			std::vector<Token> temp;
+			for (int i = 0; i < inputVector.size() - 1; i++) {
+				if (inputVector[i + 1].getType() == TokenType::OPERATOR && operators.find(inputVector[i + 1].getContent()) != std::string::npos) {
+					containsOperators = 1;
+					std::vector<Token> toEvaluate;
+					for (int j = 0; j < 3; j++) {
+						toEvaluate.push_back(inputVector[i + j]);
+					}
+					temp.push_back(evaluate(toEvaluate));
+					i += 2;
+				}
+				else {
+					temp.push_back(inputVector[i]);
+					if (i == inputVector.size() - 2) {
+						temp.push_back(inputVector[i + 1]);
+					}
+				}
+			}
+			inputVector = temp;
+		} while (containsOperators && inputVector.size() >= 3);
+	}
+	return inputVector;
+}
+
 Token Calculator::evaluate(std::vector<Token> inputVector) {
+
+	inputVector = prioritiseOperators(inputVector, "^");
+	inputVector = prioritiseOperators(inputVector, "*/");
 
 	while (inputVector.size() > 3) {
 		std::vector<Token> temp;
