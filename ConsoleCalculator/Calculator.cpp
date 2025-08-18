@@ -22,7 +22,7 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 	if (op == "+") {
 		out = num1 + num2;
 	}
-	else if(op == "-") {
+	else if (op == "-") {
 		out = num1 - num2;
 	}
 	else if (op == "*") {
@@ -62,11 +62,40 @@ Token Calculator::evaluate(std::vector<Token> inputVector) {
 }
 
 std::string Calculator::format(std::string input) {
-	return "";
+	for (int i = 0; i < input.length()-1; i++) {
+		if (input[i] == ' ') {
+			int j = 1;
+			for (int j = 1; i + j < input.length(); j++) {
+				if (input[i + j] != ' ') {
+					break;
+				}
+			}
+			input = input.substr(0,i) + input.substr(i + j);
+		}
+	}
+	if (OPERATORS.find(input[0]) != std::string::npos && input[1] != ' ') {
+		input = input.substr(0, 1) + " " + input.substr(1);
+	}
+	for (int i = 0; i < input.length() - 2; i++) {
+		if (OPERATORS.find(input[i+1]) != std::string::npos && input[i] != ' ') {
+			input = input.substr(0, i+1) + " " + input.substr(i+1);
+		}
+		if (OPERATORS.find(input[i + 1]) != std::string::npos && input[i+2] != ' ') {
+			input = input.substr(0, i + 2) + " " + input.substr(i + 2);
+		}
+	}
+	if (OPERATORS.find(input[input.length()-1]) != std::string::npos && input[input.length()-2] != ' ') {
+		input = input.substr(0, input.length() - 1) + " " + input.substr(input.length() - 1);
+	}
+	if (input[input.length() - 1] != ' ') {
+		input += " ";
+	}
+	return input;
 }
 
 std::string Calculator::simplify(std::string input) {
-	tokenise(input + " ");
+	input = format(input);
+	tokenise(input);
 	if (tokens.size() == 1) {
 		return tokens[0].getContent();
 	}

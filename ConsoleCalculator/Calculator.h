@@ -3,7 +3,7 @@
 #include "Token.h"
 #include "Converter.h"
 
-#define OPERATORS "+-*/()^"
+const std::string OPERATORS = "+-*/()^";
 
 class Calculator {
 private:

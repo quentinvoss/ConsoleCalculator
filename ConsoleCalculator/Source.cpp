@@ -8,7 +8,12 @@ int main() {
 	std::string input = "";
 	do {
 		ui.printQuery();
+
 		input = ui.getUserInput();
+		if (input.empty()) {
+			std::cout << "\n\n";
+			continue;
+		}
 		if (input != "quit") {
 			calculator = Calculator();
 			try {
