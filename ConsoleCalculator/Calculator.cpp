@@ -51,6 +51,7 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 	else {
 		throw std::invalid_argument("Unknown operator" + op);
 	}
+	return out;
 }
 
 std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
