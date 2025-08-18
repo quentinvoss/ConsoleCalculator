@@ -53,6 +53,36 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 	}
 }
 
+std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
+	std::vector<Token> temp;
+	for (int i = 0; i < inputVector.size(); i++) {
+		if (inputVector[i].getType() == TokenType::OPERATOR && "(" == inputVector[i].getContent()) {
+			std::vector<Token> toEvaluate;
+			int openCounter = 0;
+			int closedCounter = 0;
+			for (i++; i < inputVector.size(); i++) {
+				if (inputVector[i].getType() == TokenType::OPERATOR && "(" == inputVector[i].getContent()) {
+					openCounter++;
+				}
+				if (inputVector[i].getType() == TokenType::OPERATOR && ")" == inputVector[i].getContent()) {
+					if (openCounter == closedCounter) {
+						temp.push_back(evaluate(toEvaluate));
+						break;
+					}
+					else {
+						closedCounter++;
+					}
+				}
+				toEvaluate.push_back(inputVector[i]);
+			}
+		}
+		else {
+			temp.push_back(inputVector[i]);
+		}
+	}
+	return temp;
+}
+
 std::vector<Token> Calculator::prioritiseOperators(std::vector<Token> inputVector, std::string operators) {
 	if (inputVector.size() == 1) {
 		return inputVector;
@@ -86,6 +116,18 @@ std::vector<Token> Calculator::prioritiseOperators(std::vector<Token> inputVecto
 }
 
 Token Calculator::evaluate(std::vector<Token> inputVector) {
+	std::string plusAndMinus = "+-";
+	if (inputVector.size() == 2 && inputVector[0].getType() == TokenType::OPERATOR && plusAndMinus.find(inputVector[0].getContent()) != std::string::npos && inputVector[1].getType() == TokenType::NUMBER) {
+		double outcome = calculate("0", inputVector[1].getContent(), inputVector[0].getContent());
+		std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
+		return Token(TokenType::NUMBER, content);
+	}
+	else if (inputVector.size() < 3) {
+		throw std::invalid_argument("Syntax Error");
+	}
+
+
+	inputVector = handleBrackets(inputVector);
 
 	inputVector = prioritiseOperators(inputVector, "^");
 	inputVector = prioritiseOperators(inputVector, "*/");
