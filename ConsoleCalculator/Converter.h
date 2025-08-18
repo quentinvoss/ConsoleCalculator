@@ -1,5 +1,6 @@
 #pragma once
 #include "Token.h"
+#include "Functions.h"
 #include <stdexcept>
 class Converter {
 public:
@@ -13,6 +14,11 @@ public:
 			return Token(TokenType::OPERATOR, input);
 		}
 		else {
+			for (int i = 0; i < Functions::numberOfFunctions; i++) {
+				if (input == Functions::names[i]) {
+					return Token(TokenType::FUNCTION, input);
+				}
+			}
 			std::string allowedChars = "1234567890.";
 			for (int i = 0; i < input.length(); i++) {
 				if (!(allowedChars.find(input[i] != std::string::npos)) && !('-' == input[i] && input.length() == 1)) {

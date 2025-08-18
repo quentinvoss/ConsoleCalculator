@@ -54,6 +54,27 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 	return out;
 }
 
+Token Calculator::calculateFunction(Token function, Token number) {
+	double outcome = 0;
+	if (function.getContent() == "sin") {
+		outcome = Functions::sin(converter.toNum(number.getContent()));
+	}
+	else if (function.getContent() == "cos") {
+		outcome = Functions::cos(converter.toNum(number.getContent()));
+	}
+	else if (function.getContent() == "tan") {
+		outcome = Functions::tan(converter.toNum(number.getContent()));
+	}
+	else if (function.getContent() == "ln") {
+		outcome = Functions::ln(converter.toNum(number.getContent()));
+	}
+	else {
+		throw std::invalid_argument("Syntax Error");
+	}
+	std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
+	return Token(TokenType::NUMBER, content);
+}
+
 std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
 	std::vector<Token> temp;
 	for (int i = 0; i < inputVector.size(); i++) {
@@ -76,6 +97,26 @@ std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
 				}
 				toEvaluate.push_back(inputVector[i]);
 			}
+		}
+		else {
+			temp.push_back(inputVector[i]);
+		}
+	}
+	return temp;
+}
+
+std::vector<Token> Calculator::handleFunctions(std::vector<Token> inputVector) {
+	if (inputVector.size() == 1) {
+		return inputVector;
+	}
+	std::vector<Token> temp;
+	for (int i = 0; i < inputVector.size(); i++) {
+		if (inputVector[i].getType() == TokenType::FUNCTION) {
+			if (inputVector[i + 1].getType() != TokenType::NUMBER) {
+				throw std::invalid_argument("Syntax Error");
+			}
+			temp.push_back(calculateFunction(inputVector[i], inputVector[i + 1]));
+			i++;
 		}
 		else {
 			temp.push_back(inputVector[i]);
@@ -123,12 +164,11 @@ Token Calculator::evaluate(std::vector<Token> inputVector) {
 		std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
 		return Token(TokenType::NUMBER, content);
 	}
-	else if (inputVector.size() < 3) {
-		throw std::invalid_argument("Syntax Error");
-	}
 
 
 	inputVector = handleBrackets(inputVector);
+
+	inputVector = handleFunctions(inputVector);
 
 	inputVector = prioritiseOperators(inputVector, "^");
 	inputVector = prioritiseOperators(inputVector, "*/");

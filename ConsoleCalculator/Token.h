@@ -2,7 +2,8 @@
 #include <string>
 enum TokenType {
 	NUMBER,
-	OPERATOR
+	OPERATOR,
+	FUNCTION
 };
 
 class Token {
