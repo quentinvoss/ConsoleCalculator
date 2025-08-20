@@ -1,8 +1,12 @@
 #include <iostream>
 #include "Calculator.h"
 #include "UserInterface.h"
+#include "FunctionHandler.h"
+
+std::vector<std::shared_ptr<Function>> FunctionHandler::list;
 
 int main() {
+	FunctionHandler::init();
 	Calculator calculator = Calculator();
 	UserInterface ui = UserInterface();
 	std::string input = "";

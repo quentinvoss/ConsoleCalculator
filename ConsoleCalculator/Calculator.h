@@ -2,6 +2,7 @@
 #include <vector>
 #include "Token.h"
 #include "Converter.h"
+#include "FunctionHandler.h"
 
 const std::string OPERATORS = "+-*/()^";
 

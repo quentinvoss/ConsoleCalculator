@@ -1,6 +1,6 @@
 #pragma once
 #include "Token.h"
-#include "Functions.h"
+#include "FunctionHandler.h"
 #include <stdexcept>
 class Converter {
 public:
@@ -14,8 +14,8 @@ public:
 			return Token(TokenType::OPERATOR, input);
 		}
 		else {
-			for (int i = 0; i < Functions::numberOfFunctions; i++) {
-				if (input == Functions::names[i]) {
+			for (int i = 0; i < FunctionHandler::list.size(); i++) {
+				if (input == FunctionHandler::list[i]->getName()) {
 					return Token(TokenType::FUNCTION, input);
 				}
 			}

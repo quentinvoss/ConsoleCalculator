@@ -56,19 +56,15 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 
 Token Calculator::calculateFunction(Token function, Token number) {
 	double outcome = 0;
-	if (function.getContent() == "sin") {
-		outcome = Functions::sin(converter.toNum(number.getContent()));
+	bool success = 0;
+	for (int i = 0; i < FunctionHandler::list.size(); i++) {
+		if (function.getContent() == FunctionHandler::list[i]->getName()) {
+			success = 1;
+			outcome = FunctionHandler::list[i]->transform(converter.toNum(number.getContent()));
+			break;
+		}
 	}
-	else if (function.getContent() == "cos") {
-		outcome = Functions::cos(converter.toNum(number.getContent()));
-	}
-	else if (function.getContent() == "tan") {
-		outcome = Functions::tan(converter.toNum(number.getContent()));
-	}
-	else if (function.getContent() == "ln") {
-		outcome = Functions::ln(converter.toNum(number.getContent()));
-	}
-	else {
+	if(!success) {
 		throw std::invalid_argument("Syntax Error");
 	}
 	std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
