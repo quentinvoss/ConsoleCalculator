@@ -11,6 +11,7 @@ private:
 	std::string term = "";
 public:
 	Function(std::string toName, Mapping toMap);
+	Function(std::string toName, std::string toTerm);
 	double transform(double input);
 	std::string getName();
 };

@@ -19,9 +19,16 @@ int main() {
 			continue;
 		}
 		if (input != "quit") {
-			calculator = Calculator();
 			try {
-				ui.printOutcome(calculator.simplify(input));
+				if (input.size() >= 6 && input.substr(0, 6) == "define") {
+					FunctionHandler::parse(input);
+					ui.printSpace();
+				}
+				else {
+					calculator = Calculator();
+
+					ui.printOutcome(calculator.simplify(input));
+				}
 			}
 			catch (std::invalid_argument e) {
 				std::cout << e.what() << "\n\n\n";

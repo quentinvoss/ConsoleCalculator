@@ -10,6 +10,11 @@ public:
 	void printQuery() {
 		std::cout << "Enter the term you want simplified!\n(Type \"quit\" to quit)\nInput: ";
 	}
+
+	void printSpace() {
+		std::cout << "\n\n";
+	}
+
 	std::string getUserInput() {
 		std::string out = "";
 		std::getline(std::cin, out);

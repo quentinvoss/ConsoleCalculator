@@ -64,7 +64,7 @@ Token Calculator::calculateFunction(Token function, Token number) {
 			break;
 		}
 	}
-	if(!success) {
+	if (!success) {
 		throw std::invalid_argument("Syntax Error");
 	}
 	std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
@@ -192,7 +192,7 @@ Token Calculator::evaluate(std::vector<Token> inputVector) {
 }
 
 std::string Calculator::format(std::string input) {
-	for (int i = 0; i < input.length()-1; i++) {
+	for (int i = 0; i < input.length() - 1; i++) {
 		if (input[i] == ' ') {
 			int j = 1;
 			for (int j = 1; i + j < input.length(); j++) {
@@ -200,21 +200,21 @@ std::string Calculator::format(std::string input) {
 					break;
 				}
 			}
-			input = input.substr(0,i) + input.substr(i + j);
+			input = input.substr(0, i) + input.substr(i + j);
 		}
 	}
 	if (OPERATORS.find(input[0]) != std::string::npos && input[1] != ' ') {
 		input = input.substr(0, 1) + " " + input.substr(1);
 	}
 	for (int i = 0; i < input.length() - 2; i++) {
-		if (OPERATORS.find(input[i+1]) != std::string::npos && input[i] != ' ') {
-			input = input.substr(0, i+1) + " " + input.substr(i+1);
+		if (OPERATORS.find(input[i + 1]) != std::string::npos && input[i] != ' ') {
+			input = input.substr(0, i + 1) + " " + input.substr(i + 1);
 		}
-		if (OPERATORS.find(input[i + 1]) != std::string::npos && input[i+2] != ' ') {
+		if (OPERATORS.find(input[i + 1]) != std::string::npos && input[i + 2] != ' ') {
 			input = input.substr(0, i + 2) + " " + input.substr(i + 2);
 		}
 	}
-	if (OPERATORS.find(input[input.length()-1]) != std::string::npos && input[input.length()-2] != ' ') {
+	if (OPERATORS.find(input[input.length() - 1]) != std::string::npos && input[input.length() - 2] != ' ') {
 		input = input.substr(0, input.length() - 1) + " " + input.substr(input.length() - 1);
 	}
 	if (input[input.length() - 1] != ' ') {
