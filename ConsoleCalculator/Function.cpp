@@ -25,12 +25,13 @@ std::string insertNum(std::string input, double num) {
 	return out;
 }
 
+Calculator calculator = Calculator();
+
 double Function::transform(double input) {
 	if (!custom) {
 		return map(input);
 	}
 	else {
-		Calculator calculator = Calculator();
 		return std::stod(calculator.simplify(insertNum(term, input)));
 	}
 }

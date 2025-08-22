@@ -25,8 +25,6 @@ int main() {
 					ui.printSpace();
 				}
 				else {
-					calculator = Calculator();
-
 					ui.printOutcome(calculator.simplify(input));
 				}
 			}

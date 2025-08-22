@@ -229,5 +229,7 @@ std::string Calculator::simplify(std::string input) {
 	if (tokens.size() == 1) {
 		return tokens[0].getContent();
 	}
-	return evaluate(tokens).getContent();
+	std::string output = evaluate(tokens).getContent();
+	tokens.clear();
+	return output;
 }
