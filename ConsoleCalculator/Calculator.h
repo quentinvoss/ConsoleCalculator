@@ -4,8 +4,6 @@
 #include "Converter.h"
 #include "FunctionHandler.h"
 
-const std::string OPERATORS = "+-*/()^";
-
 class Calculator {
 private:
 	std::vector<Token> tokens;

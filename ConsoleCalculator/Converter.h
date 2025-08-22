@@ -9,8 +9,7 @@ public:
 		if (input.empty()) {
 			throw std::invalid_argument("Syntax Error");
 		}
-		std::string ops = "+-*/()^";
-		if (input.length() == 1 && ops.find(input) != std::string::npos) {
+		if (input.length() == 1 && OPERATORS.find(input) != std::string::npos) {
 			return Token(TokenType::OPERATOR, input);
 		}
 		else {

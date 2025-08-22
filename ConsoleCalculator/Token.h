@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+
+const std::string OPERATORS = "+-*/()^";
+
 enum TokenType {
 	NUMBER,
 	OPERATOR,
