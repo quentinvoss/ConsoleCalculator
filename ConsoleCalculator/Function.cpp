@@ -14,9 +14,13 @@ Function::Function(std::string toName, std::string toTerm) {
 
 std::string insertNum(std::string input, double num) {
 	std::string out = "";
+	std::string numStr = std::to_string(num);
+	if (num < 0) {
+		numStr = "(" + numStr + ")";
+	}
 	for (char c : input) {
 		if (c == '\\') {
-			out += std::to_string(num);
+			out += numStr;
 		}
 		else {
 			out += c;

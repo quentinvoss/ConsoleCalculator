@@ -73,8 +73,10 @@ Token Calculator::calculateFunction(Token function, Token number) {
 
 std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
 	std::vector<Token> temp;
+	bool syntaxCheck = 1;
 	for (int i = 0; i < inputVector.size(); i++) {
 		if (inputVector[i].getType() == TokenType::OPERATOR && "(" == inputVector[i].getContent()) {
+			syntaxCheck = 0;
 			std::vector<Token> toEvaluate;
 			int openCounter = 0;
 			int closedCounter = 0;
@@ -85,6 +87,7 @@ std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
 				if (inputVector[i].getType() == TokenType::OPERATOR && ")" == inputVector[i].getContent()) {
 					if (openCounter == closedCounter) {
 						temp.push_back(evaluate(toEvaluate));
+						syntaxCheck = 1;
 						break;
 					}
 					else {
@@ -97,6 +100,9 @@ std::vector<Token> Calculator::handleBrackets(std::vector<Token> inputVector) {
 		else {
 			temp.push_back(inputVector[i]);
 		}
+	}
+	if (!syntaxCheck) {
+		throw std::invalid_argument("Syntax Error");
 	}
 	return temp;
 }
@@ -124,6 +130,9 @@ std::vector<Token> Calculator::handleFunctions(std::vector<Token> inputVector) {
 std::vector<Token> Calculator::prioritiseOperators(std::vector<Token> inputVector, std::string operators) {
 	if (inputVector.size() == 1) {
 		return inputVector;
+	}
+	if (inputVector.size() > 2 && inputVector.size() % 2 == 0) {
+		throw std::invalid_argument("Syntax Error");
 	}
 	if (inputVector.size() != 3) {
 		bool containsOperators;
@@ -186,8 +195,11 @@ Token Calculator::evaluate(std::vector<Token> inputVector) {
 		std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
 		return Token(TokenType::NUMBER, content);
 	}
-	else {
+	if(inputVector.size() == 1) {
 		return inputVector[0];
+	}
+	else {
+		throw std::invalid_argument("Syntax Error");
 	}
 }
 
@@ -195,7 +207,7 @@ std::string Calculator::format(std::string input) {
 	for (int i = 0; i < input.length() - 1; i++) {
 		if (input[i] == ' ') {
 			int j = 1;
-			for (int j = 1; i + j < input.length(); j++) {
+			for (j = 1; i + j < input.length(); j++) {
 				if (input[i + j] != ' ') {
 					break;
 				}
@@ -225,11 +237,11 @@ std::string Calculator::format(std::string input) {
 
 std::string Calculator::simplify(std::string input) {
 	input = format(input);
+	tokens.clear();
 	tokenise(input);
 	if (tokens.size() == 1) {
 		return tokens[0].getContent();
 	}
 	std::string output = evaluate(tokens).getContent();
-	tokens.clear();
 	return output;
 }
