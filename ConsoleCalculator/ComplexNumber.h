@@ -49,9 +49,6 @@ public:
 				out += std::to_string(abs(imaginaryPart)) + "i";
 			}
 		}
-		if (out == "") {
-			std::cout << realPart << " " << imaginaryPart << "\n";
-		}
 		return out;
 	}
 	ComplexNumber& operator+=(const ComplexNumber& other);
