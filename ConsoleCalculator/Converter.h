@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 #include "Token.h"
 #include "FunctionHandler.h"
 #include <stdexcept>
@@ -84,6 +84,9 @@ public:
 		}
 		if (!iSeen && !plusOrMinusSeen) {
 			return ComplexNumber(toNum(input));
+		}
+		if (operatorIndex == 0 && iSeen) {
+			return ComplexNumber(0, toNum(input.substr(0, input.length() - 1)));
 		}
 		std::string realPart = input.substr(0, operatorIndex-1);
 		std::string imaginaryPart = input.substr(operatorIndex+2, input.length() - operatorIndex +1);

@@ -4,6 +4,9 @@
 #include "../ConsoleCalculator/Calculator.cpp"
 #include "../ConsoleCalculator/Source.cpp"
 #include "../ConsoleCalculator/Function.cpp"
+#include "../ConsoleCalculator/ComplexFunctions.h"
+#include "../ConsoleCalculator/FunctionHandler.h"
+#include "../ConsoleCalculator/ComplexFunctions.cpp"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -138,6 +141,10 @@ namespace CalculatorTest {
 			expected = "29";
 			result = calculator.simplify("f(4) + f(1)");
 			Assert::AreEqual(expected, result);
+			expected = "1";
+			result = calculator.simplify("f(0)");
+			Assert::AreEqual(expected, result);
+
 			expected = "2";
 			result = calculator.simplify("g(0) + f(0)");
 			Assert::AreEqual(expected, result);

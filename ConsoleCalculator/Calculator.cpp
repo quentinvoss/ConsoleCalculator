@@ -35,11 +35,12 @@ ComplexNumber Calculator::calculate(std::string number1, std::string number2, st
 		out = num1 / num2;
 	}
 	else if (op == "^") {
-		if (num1 == 0 && (num2.real() <= 0 || num2.imaginary() <= 0)) {
+		if (num1 == 0) {
 			if (num2 == 0) {
 				throw std::invalid_argument("Undefined Behaviour");
 			}
-			else {
+			else if(num2.real() <= 0 || num2.imaginary() < 0){
+				std::cout << num2.real() << " " << num2.imaginary() << "\n";
 				throw std::invalid_argument("Division by Zero");
 			}
 		}
@@ -52,20 +53,19 @@ ComplexNumber Calculator::calculate(std::string number1, std::string number2, st
 }
 
 Token Calculator::calculateFunction(Token function, Token number) {
-	double outcome = 0;
+	ComplexNumber outcome = 0;
 	bool success = 0;
 	for (int i = 0; i < FunctionHandler::list.size(); i++) {
 		if (function.getContent() == FunctionHandler::list[i]->getName()) {
 			success = 1;
-			//complex number support to be added later
-			//outcome = FunctionHandler::list[i]->transform(converter.toNum(number.getContent()));
+			outcome = FunctionHandler::list[i]->transform(converter.toNumber(number.getContent()));
 			break;
 		}
 	}
 	if (!success) {
 		throw std::invalid_argument("Syntax Error");
 	}
-	std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
+	std::string content = outcome.toString();
 	return Token(TokenType::NUMBER, content);
 }
 

@@ -2,6 +2,7 @@
 #include "Calculator.h"
 #include "UserInterface.h"
 #include "FunctionHandler.h"
+#include "ComplexFunctions.h"
 
 std::vector<std::shared_ptr<Function>> FunctionHandler::list;
 

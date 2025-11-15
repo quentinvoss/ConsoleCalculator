@@ -39,12 +39,18 @@ public:
 			if (out.length() > 0) {
 				out += imaginaryPart > 0 ? " + " : " - ";
 			}
+			if (out.length() == 0 && imaginaryPart < 0) {
+				out += "-";
+			}
 			if (abs(imaginaryPart - round(imaginaryPart)) <= 0.00001) {
 				out += std::to_string(abs(int(round(imaginaryPart)))) + "i";
 			}
 			else {
 				out += std::to_string(abs(imaginaryPart)) + "i";
 			}
+		}
+		if (out == "") {
+			std::cout << realPart << " " << imaginaryPart << "\n";
 		}
 		return out;
 	}
@@ -63,4 +69,4 @@ ComplexNumber operator^(const ComplexNumber& base, const ComplexNumber& exponent
 bool operator==(const ComplexNumber& first, const ComplexNumber& second);
 bool operator!=(const ComplexNumber& first, const ComplexNumber& second);
 
-static ComplexNumber log(const ComplexNumber& number);
+ComplexNumber log(const ComplexNumber& number);

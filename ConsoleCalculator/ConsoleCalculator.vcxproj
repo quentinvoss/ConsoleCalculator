@@ -128,12 +128,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Calculator.cpp" />
+    <ClCompile Include="ComplexFunctions.cpp" />
     <ClCompile Include="ComplexNumber.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calculator.h" />
+    <ClInclude Include="ComplexFunctions.h" />
     <ClInclude Include="ComplexNumber.h" />
     <ClInclude Include="Converter.h" />
     <ClInclude Include="Function.h" />

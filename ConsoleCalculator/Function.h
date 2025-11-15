@@ -2,7 +2,7 @@
 #include <string>
 #include "ComplexNumber.h"
 
-typedef double(*Mapping)(double);
+typedef ComplexNumber(*Mapping)(ComplexNumber);
 
 class Function {
 private:
@@ -13,6 +13,6 @@ private:
 public:
 	Function(std::string toName, Mapping toMap);
 	Function(std::string toName, std::string toTerm);
-	double transform(double input);
+	ComplexNumber transform(ComplexNumber input);
 	std::string getName();
 };

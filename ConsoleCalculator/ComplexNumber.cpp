@@ -24,12 +24,18 @@ ComplexNumber operator/(const ComplexNumber& first, const ComplexNumber& second)
 }
 
 ComplexNumber operator^(const double& base, const ComplexNumber& exponent) {
+	if(base == 0) {
+		return ComplexNumber(0,0);
+	}
 	double firstPart = exp(log(base) * exponent.real());
 	ComplexNumber secondPart = ComplexNumber(cos(log(base) * exponent.imaginary()),sin(log(base) * exponent.imaginary()));
 	return firstPart * secondPart;
 }
 
 ComplexNumber operator^(const ComplexNumber& base, const ComplexNumber& exponent) {
+	if(base == 0) {
+		return ComplexNumber(0,0);
+	}
 	ComplexNumber tempExponent = log(base) * exponent;
 	return EULERS_NUMBER ^ tempExponent;
 }
@@ -63,6 +69,9 @@ ComplexNumber& ComplexNumber::operator/=(const ComplexNumber& other) {
 	return *this;
 }
 ComplexNumber& ComplexNumber::operator^=(const ComplexNumber& other) {
+	if (*this == 0) {
+		return *this;
+	}
 	ComplexNumber result = *this ^ other;
 	realPart = result.real();
 	imaginaryPart = result.imaginary();
@@ -78,7 +87,7 @@ bool operator!=(const ComplexNumber& first, const ComplexNumber& second) {
 }
 
 
-static ComplexNumber log(const ComplexNumber& number) {
+ComplexNumber log(const ComplexNumber& number) {
 	double magnitude = number.magnitude();
 	double angle = atan2(number.imaginary(), number.real());
 	return ComplexNumber(log(magnitude), angle);

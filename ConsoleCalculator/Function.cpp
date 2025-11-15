@@ -12,12 +12,10 @@ Function::Function(std::string toName, std::string toTerm) {
 	term = toTerm;
 }
 
-std::string insertNum(std::string input, double num) {
+std::string insertNum(std::string input, ComplexNumber num) {
 	std::string out = "";
-	std::string numStr = std::to_string(num);
-	if (num < 0) {
-		numStr = "(" + numStr + ")";
-	}
+	std::string numStr = num.toString();
+	numStr = "(" + numStr + ")";
 	for (char c : input) {
 		if (c == '\\') {
 			out += numStr;
@@ -30,13 +28,14 @@ std::string insertNum(std::string input, double num) {
 }
 
 Calculator calculator = Calculator();
+Converter converter = Converter();
 
-double Function::transform(double input) {
+ComplexNumber Function::transform(ComplexNumber input) {
 	if (!custom) {
 		return map(input);
 	}
 	else {
-		return std::stod(calculator.simplify(insertNum(term, input)));
+		return converter.toNumber(calculator.simplify(insertNum(term, input)));
 	}
 }
 
