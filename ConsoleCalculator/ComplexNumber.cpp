@@ -1,19 +1,19 @@
 #include "ComplexNumber.h"
 
-static ComplexNumber operator+(const ComplexNumber& first,const ComplexNumber& second) {
+ComplexNumber operator+(const ComplexNumber& first,const ComplexNumber& second) {
 	return ComplexNumber(first.real() + second.real(), first.imaginary() + second.imaginary());
 }
 
-static ComplexNumber operator-(const ComplexNumber& first, const ComplexNumber& second) {
+ComplexNumber operator-(const ComplexNumber& first, const ComplexNumber& second) {
 	return ComplexNumber(first.real() - second.real(), first.imaginary() - second.imaginary());
 }
 
-static ComplexNumber operator*(const ComplexNumber& first, const ComplexNumber& second) {
+ComplexNumber operator*(const ComplexNumber& first, const ComplexNumber& second) {
 	return ComplexNumber(first.real() * second.real() - first.imaginary() * second.imaginary(),
 		first.real() * second.imaginary() + first.imaginary() * second.real());
 }
 
-static ComplexNumber operator/(const ComplexNumber& first, const ComplexNumber& second) {
+ComplexNumber operator/(const ComplexNumber& first, const ComplexNumber& second) {
 	double firstReal = first.real();
 	double firstImaginary = first.imaginary();
 	double secondReal = second.real();
@@ -23,13 +23,13 @@ static ComplexNumber operator/(const ComplexNumber& first, const ComplexNumber& 
 	return ComplexNumber(real, imaginary);
 }
 
-static ComplexNumber operator^(const double& base, const ComplexNumber& exponent) {
+ComplexNumber operator^(const double& base, const ComplexNumber& exponent) {
 	double firstPart = exp(log(base) * exponent.real());
 	ComplexNumber secondPart = ComplexNumber(cos(log(base) * exponent.imaginary()),sin(log(base) * exponent.imaginary()));
 	return firstPart * secondPart;
 }
 
-static ComplexNumber operator^(const ComplexNumber& base, const ComplexNumber& exponent) {
+ComplexNumber operator^(const ComplexNumber& base, const ComplexNumber& exponent) {
 	ComplexNumber tempExponent = log(base) * exponent;
 	return EULERS_NUMBER ^ tempExponent;
 }
@@ -68,6 +68,13 @@ ComplexNumber& ComplexNumber::operator^=(const ComplexNumber& other) {
 	imaginaryPart = result.imaginary();
 	magnitudeNumber = sqrt(realPart * realPart + imaginaryPart * imaginaryPart);
 	return *this;
+}
+
+bool operator==(const ComplexNumber& first, const ComplexNumber& second) {
+	return first.real() == second.real() && first.imaginary() == second.imaginary();
+}
+bool operator!=(const ComplexNumber& first, const ComplexNumber& second) {
+	return !(first == second);
 }
 
 

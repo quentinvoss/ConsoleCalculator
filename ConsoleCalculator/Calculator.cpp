@@ -15,10 +15,10 @@ void Calculator::tokenise(std::string input) {
 	}
 }
 
-double Calculator::calculate(std::string number1, std::string number2, std::string op /*operator*/) {
-	double num1 = converter.toNum(number1);
-	double num2 = converter.toNum(number2);
-	double out = 0;
+ComplexNumber Calculator::calculate(std::string number1, std::string number2, std::string op /*operator*/) {
+	ComplexNumber num1 = converter.toNumber(number1);
+	ComplexNumber num2 = converter.toNumber(number2);
+	ComplexNumber out = 0;
 	if (op == "+") {
 		out = num1 + num2;
 	}
@@ -35,7 +35,7 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 		out = num1 / num2;
 	}
 	else if (op == "^") {
-		if (num1 == 0 && num2 <= 0) {
+		if (num1 == 0 && (num2.real() <= 0 || num2.imaginary() <= 0)) {
 			if (num2 == 0) {
 				throw std::invalid_argument("Undefined Behaviour");
 			}
@@ -43,10 +43,7 @@ double Calculator::calculate(std::string number1, std::string number2, std::stri
 				throw std::invalid_argument("Division by Zero");
 			}
 		}
-		if (num1 < 0 && num2 != int(num2)) {
-			throw std::invalid_argument("Non real outcome");
-		}
-		out = pow(num1, num2);
+		out = num1 ^ num2;
 	}
 	else {
 		throw std::invalid_argument("Unknown operator" + op);
@@ -60,7 +57,8 @@ Token Calculator::calculateFunction(Token function, Token number) {
 	for (int i = 0; i < FunctionHandler::list.size(); i++) {
 		if (function.getContent() == FunctionHandler::list[i]->getName()) {
 			success = 1;
-			outcome = FunctionHandler::list[i]->transform(converter.toNum(number.getContent()));
+			//complex number support to be added later
+			//outcome = FunctionHandler::list[i]->transform(converter.toNum(number.getContent()));
 			break;
 		}
 	}
@@ -165,8 +163,8 @@ std::vector<Token> Calculator::prioritiseOperators(std::vector<Token> inputVecto
 Token Calculator::evaluate(std::vector<Token> inputVector) {
 	std::string plusAndMinus = "+-";
 	if (inputVector.size() == 2 && inputVector[0].getType() == TokenType::OPERATOR && plusAndMinus.find(inputVector[0].getContent()) != std::string::npos && inputVector[1].getType() == TokenType::NUMBER) {
-		double outcome = calculate("0", inputVector[1].getContent(), inputVector[0].getContent());
-		std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
+		ComplexNumber outcome = calculate("0", inputVector[1].getContent(), inputVector[0].getContent());
+		std::string content = outcome.toString();
 		return Token(TokenType::NUMBER, content);
 	}
 
@@ -191,8 +189,8 @@ Token Calculator::evaluate(std::vector<Token> inputVector) {
 		inputVector = temp;
 	}
 	if (inputVector.size() == 3) {
-		double outcome = calculate(inputVector[0].getContent(), inputVector[2].getContent(), inputVector[1].getContent());
-		std::string content = (outcome == int(outcome) ? std::to_string(int(outcome)) : std::to_string(outcome));
+		ComplexNumber outcome = calculate(inputVector[0].getContent(), inputVector[2].getContent(), inputVector[1].getContent());
+		std::string content = outcome.toString();
 		return Token(TokenType::NUMBER, content);
 	}
 	if(inputVector.size() == 1) {
@@ -204,16 +202,9 @@ Token Calculator::evaluate(std::vector<Token> inputVector) {
 }
 
 std::string Calculator::format(std::string input) {
-	for (int i = 0; i < input.length() - 1; i++) {
-		if (input[i] == ' ') {
-			int j = 1;
-			for (j = 1; i + j < input.length(); j++) {
-				if (input[i + j] != ' ') {
-					break;
-				}
-			}
-			input = input.substr(0, i) + input.substr(i + j);
-		}
+	input.erase(remove(input.begin(), input.end(), ' '), input.end());
+	if (input.length() == 1) {
+		return input + " ";
 	}
 	if (OPERATORS.find(input[0]) != std::string::npos && input[1] != ' ') {
 		input = input.substr(0, 1) + " " + input.substr(1);

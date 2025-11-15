@@ -199,21 +199,6 @@ namespace CalculatorTest {
 			}
 
 			Assert::AreEqual(expected, result);
-
-			//(-1)^0.5
-
-			result = "";
-
-			expected = "Non real outcome";
-
-			try {
-				calculator.simplify("(-1)^0.5");
-			}
-			catch (std::invalid_argument e) {
-				result = e.what();
-			}
-
-			Assert::AreEqual(expected, result);
 		}
 
 		TEST_METHOD(SyntaxErrors) {

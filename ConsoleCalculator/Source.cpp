@@ -5,6 +5,15 @@
 
 std::vector<std::shared_ptr<Function>> FunctionHandler::list;
 
+bool isBlank(std::string str) {
+	for (int i = 0; i < str.length(); i++) {
+		if (str[i] != ' ') {
+			return 0;
+		}
+	}
+	return 1;
+}
+
 int main() {
 	FunctionHandler::init();
 	Calculator calculator = Calculator();
@@ -14,7 +23,7 @@ int main() {
 		ui.printQuery();
 
 		input = ui.getUserInput();
-		if (input.empty()) {
+		if (input.empty() || isBlank(input)) {
 			std::cout << "\n\n";
 			continue;
 		}

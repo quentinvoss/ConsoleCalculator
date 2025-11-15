@@ -1,6 +1,7 @@
 #pragma once
 #include <cmath>
 #include <string>
+#include <iostream>
 #define EULERS_NUMBER 2.71828182845904523536028
 
 class ComplexNumber {
@@ -22,10 +23,28 @@ public:
 		return magnitudeNumber;
 	}
 	std::string toString() const {
+		if (abs(realPart) <= 0.00001 && abs(imaginaryPart) <= 0.00001) {
+			return "0";
+		}
 		std::string out = "";
-		out += std::to_string(realPart);
-		if (std::to_string(imaginaryPart) != "0") {
-			out += " + " + std::to_string(imaginaryPart) + "i";
+		if (abs(realPart) > 0.00001) {
+			if (abs(realPart - round(realPart)) <= 0.00001 ) {
+				out += std::to_string(int(round(realPart)));
+			}
+			else {
+				out += std::to_string(realPart);
+			}
+		}
+		if (abs(imaginaryPart) > 0.00001) {
+			if (out.length() > 0) {
+				out += imaginaryPart > 0 ? " + " : " - ";
+			}
+			if (abs(imaginaryPart - round(imaginaryPart)) <= 0.00001) {
+				out += std::to_string(abs(int(round(imaginaryPart)))) + "i";
+			}
+			else {
+				out += std::to_string(abs(imaginaryPart)) + "i";
+			}
 		}
 		return out;
 	}
@@ -35,5 +54,13 @@ public:
 	ComplexNumber& operator/=(const ComplexNumber& other);
 	ComplexNumber& operator^=(const ComplexNumber& other);
 };
+
+ComplexNumber operator+(const ComplexNumber& first, const ComplexNumber& second);
+ComplexNumber operator-(const ComplexNumber& first, const ComplexNumber& second);
+ComplexNumber operator*(const ComplexNumber& first, const ComplexNumber& second);
+ComplexNumber operator/(const ComplexNumber& first, const ComplexNumber& second);
+ComplexNumber operator^(const ComplexNumber& base, const ComplexNumber& exponent);
+bool operator==(const ComplexNumber& first, const ComplexNumber& second);
+bool operator!=(const ComplexNumber& first, const ComplexNumber& second);
 
 static ComplexNumber log(const ComplexNumber& number);

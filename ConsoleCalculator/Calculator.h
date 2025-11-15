@@ -9,7 +9,7 @@ private:
 	std::vector<Token> tokens;
 	Converter converter = Converter();
 	void tokenise(std::string input);
-	double calculate(std::string number1, std::string number2, std::string op /*operator*/);
+	ComplexNumber calculate(std::string number1, std::string number2, std::string op /*operator*/);
 	Token calculateFunction(Token function, Token number);
 	std::vector<Token> handleBrackets(std::vector<Token> inputVector);
 	std::vector<Token> handleFunctions(std::vector<Token> inputVector);

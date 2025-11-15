@@ -2,6 +2,7 @@
 #include "CppUnitTest.h"
 #include "../ConsoleCalculator/ComplexNumber.h"
 #include "../ConsoleCalculator/ComplexNumber.cpp"
+#include "../ConsoleCalculator/Converter.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -142,6 +143,55 @@ namespace ComplexNumberTest {
 			base ^= exponent;
 			Assert::AreEqual(-1.0, base.real(), 0.0001);
 			Assert::AreEqual(0.0, base.imaginary(), 0.0001);
+		}
+	};
+
+	TEST_CLASS(ConverterTest) {
+	public:
+		TEST_METHOD(ToString){
+			std::string expected = "0";
+
+			ComplexNumber num1(0, 0);
+			Assert::AreEqual(expected, num1.toString());
+
+			ComplexNumber num2(3, 0);
+			expected = "3";
+			Assert::AreEqual(expected, num2.toString());
+
+			ComplexNumber num3(0, 4);
+			expected = "4i";
+			Assert::AreEqual(expected, num3.toString());
+
+			ComplexNumber num4(2, 5);
+			expected = "2 + 5i";
+			Assert::AreEqual(expected, num4.toString());
+
+			ComplexNumber num5(2, -5);
+			expected = "2 - 5i";
+			Assert::AreEqual(expected, num5.toString());
+
+			ComplexNumber num6(-2, -5);
+			expected = "-2 - 5i";
+			Assert::AreEqual(expected, num6.toString());
+		}
+
+		TEST_METHOD(FromString) {
+			Converter converter;
+			ComplexNumber num1 = converter.toNumber("3");
+			Assert::AreEqual(3.0, num1.real());
+			Assert::AreEqual(0.0, num1.imaginary());
+			ComplexNumber num2 = converter.toNumber("4i");
+			Assert::AreEqual(0.0, num2.real());
+			Assert::AreEqual(4.0, num2.imaginary());
+			ComplexNumber num3 = converter.toNumber("2 + 5i");
+			Assert::AreEqual(2.0, num3.real());
+			Assert::AreEqual(5.0, num3.imaginary());
+			ComplexNumber num4 = converter.toNumber("2 - 5i");
+			Assert::AreEqual(2.0, num4.real());
+			Assert::AreEqual(-5.0, num4.imaginary());
+			ComplexNumber num5 = converter.toNumber("-2 - 5i");
+			Assert::AreEqual(-2.0, num5.real());
+			Assert::AreEqual(-5.0, num5.imaginary());
 		}
 	};
 }
